@@ -1,0 +1,23 @@
+{
+  "name": "react-aleph-core",
+  "version": "1.0.0",
+  "description": "React Aleph Official Core",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "tsc && node ./dist/index.js",
+    "test": "test"
+  },
+  "keywords": [
+    "core",
+    "parser",
+    "performance"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.2.204"
+  },
+  "author": "Railly Hugo",
+  "license": "ISC"
+}
