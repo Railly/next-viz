@@ -1,5 +1,5 @@
 {
-  "name": "react-aleph",
+  "name": "@react-aleph/root",
   "version": "1.0.0",
   "private": true,
   "description": "",
@@ -11,6 +11,8 @@
     "start:cli": "npm run start --workspace=lib/cli",
     "start:core": "npm run start --workspace=lib/core",
     "dev:client": "npm run dev --workspace=lib/client",
+    "test:cli": "npm run test --workspace=lib/cli",
+    "test:core": "npm run test --workspace=lib/core",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },

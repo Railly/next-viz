@@ -1,5 +1,5 @@
 {
-  "name": "react-aleph-core",
+  "name": "@react-aleph/core",
   "version": "1.0.0",
   "description": "React Aleph Official Core",
   "main": "index.js",
