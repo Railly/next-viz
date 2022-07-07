@@ -1,6 +1,6 @@
 {
   "name": "@react-aleph/root",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "",
   "main": "index.js",
@@ -16,6 +16,15 @@
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Railly/react-aleph.git"
+  },
+  "keywords": [
+    "react",
+    "visualization",
+    "metrics"
+  ],
   "author": "Railly Hugo",
   "license": "ISC",
   "devDependencies": {
@@ -26,5 +35,9 @@
     "vitest": "^0.16.0",
     "c8": "^7.11.3"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "bugs": {
+    "url": "https://github.com/Railly/react-aleph/issues"
+  },
+  "homepage": "https://github.com/Railly/react-aleph#readme"
 }
