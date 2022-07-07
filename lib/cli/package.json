@@ -1,5 +1,5 @@
 {
-  "name": "@react-aleph/cli",
+  "name": "react-aleph-cli",
   "version": "0.0.1",
   "description": "React Aleph Official CLI",
   "main": "index.js",
