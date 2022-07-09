@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc && node ./dist/index.js",
-    "test": "test"
+    "test": "test",
+    "publish": "npm publish"
   },
   "keywords": [
     "core",
@@ -19,5 +20,9 @@
     "@swc/core": "^1.2.204"
   },
   "author": "Railly Hugo",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Railly/react-aleph/issues"
+  },
+  "homepage": "https://github.com/Railly/react-aleph#readme"
 }

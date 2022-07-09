@@ -4,7 +4,8 @@
   "description": "React Aleph Official CLI",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "publish": "npm publish"
   },
   "keywords": [
     "react-aleph",
@@ -17,6 +18,7 @@
     "clear": "^0.1.0",
     "commander": "^9.3.0",
     "figlet": "^1.5.2",
+    "nodemon": "^2.0.19",
     "path": "^0.12.7"
   },
   "author": "Railly Hugo",
