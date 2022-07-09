@@ -16,8 +16,8 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "@swc/cli": "^0.1.57",
-    "@swc/core": "^1.2.204"
+    "@swc/cli": "0.1.57",
+    "@swc/core": "1.2.204"
   },
   "author": "Railly Hugo",
   "license": "ISC",
