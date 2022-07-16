@@ -1,7 +1,14 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist" /* Specify an output folder for all emitted files. */
+    "lib": ["es6", "es2017", "dom"],
+    "declaration": true,
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "strict": true,
+    "types": ["node"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "include": ["**/*.ts"],
   "exclude": ["**/*.config.ts", "__tests__/**/*.ts"]
