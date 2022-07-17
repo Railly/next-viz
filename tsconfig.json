@@ -3,7 +3,8 @@
     "target": "es2017",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
   "exclude": ["**/*.config.ts", "__tests__/**/*.ts"]
 }

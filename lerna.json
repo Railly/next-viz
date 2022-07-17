@@ -1,0 +1,6 @@
+{
+  "packages": ["lib/*"],
+  "registry": "https://registry.npmjs.org",
+  "useNx": true,
+  "version": "0.0.0"
+}
