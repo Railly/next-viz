@@ -15,7 +15,7 @@
     "test:core": "npm run test --workspace=lib/core",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "bootstrap": "lerna bootstrap"
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
     "@types/node": "18.0.0",
     "c8": "7.11.3",
     "eslint": "8.19.0",
+    "husky": "^8.0.1",
     "lerna": "^5.1.8",
     "nx": "^14.4.3",
     "ts-node": "10.8.2",
