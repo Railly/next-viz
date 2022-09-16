@@ -1,6 +1,6 @@
-import { ESLint } from "eslint";
-import fs from "fs";
-import swc from "@swc/core";
+import { ESLint } from "eslint"
+import fs from "fs"
+import swc from "@swc/core"
 
 try {
   // const eslint = new ESLint({
@@ -22,11 +22,11 @@ try {
   //     // plugins: ["@typescript-eslint"],
   //   },
   // });
-  console.time("swc");
+  console.time("swc")
   const code = fs.readFileSync(
     "C://workspace/projects/cinfo/cinfo-proyecto-front/pages/login/index.js",
     "utf8"
-  );
+  )
   swc
     .parse(code, {
       syntax: "ecmascript", // "ecmascript" | "typescript"
@@ -40,8 +40,8 @@ try {
       // Input source code are treated as module by default
     })
     .then((module) => {
-      console.log(module.interpreter, "@module.interpreter");
-      console.log(module.type, "@module.type"); // file type
+      console.log(module.interpreter, "@module.interpreter")
+      console.log(module.type, "@module.type") // file type
 
       // @module.body AST
       // [
@@ -91,17 +91,17 @@ try {
       // ]
       module.body.forEach((item) => {
         Object.entries(item).forEach(([key, value], num) => {
-          console.log(`******************${num}******************`);
-          console.table(key);
+          console.log(`******************${num}******************`)
+          console.table(key)
           if (value instanceof Array) {
             value.forEach((item, num) => {
-              console.log(`******************${num}******************`);
-              console.table(item);
-            });
+              console.log(`******************${num}******************`)
+              console.table(item)
+            })
           } else {
-            console.log(value, "RAW");
+            console.log(value, "RAW")
           }
-        });
+        })
         // console.log(item.value, "@item.value");
         // console.log(item.optional, "@item.optional");
         // console.log(item.declare, "@item.declare");
@@ -113,10 +113,10 @@ try {
         // console.log(item.typeParameters, "@item.typeParameters");
         // console.log(item.returnType, "@item.returnType");
         // loop module.body, but prints correctly the [Object]
-      });
-    });
+      })
+    })
 
-  console.timeEnd("swc");
+  console.timeEnd("swc")
 
   // 2. Lint files.
   // const results = await eslint.lintFiles(["./test.js"]);
@@ -130,6 +130,6 @@ try {
   // 4. Output it.
   // console.log(resultText);
 } catch (error) {
-  process.exitCode = 1;
-  console.error(error);
+  process.exitCode = 1
+  console.error(error)
 }

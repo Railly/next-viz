@@ -11,9 +11,9 @@ I will document my journey on my [personal website](https://raillyhugo.com).
 - [x] Create base code for UI (`react-aleph-ui`)
 - [x] Setup monorepo with npm workspaces
 - [x] Setup lerna for managing monorepo flow
-- [ ] Setup eslint with linting rules
-- [ ] Setup prettier with formatting rules
-- [ ] Setup husky and sync with lerna flow
+- [x] Setup eslint with linting rules
+- [x] Setup prettier with formatting rules
+- [x] Setup husky and sync with lerna flow
 - [ ] ...
 
 ## Installation
