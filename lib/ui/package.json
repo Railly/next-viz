@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "publish": "npm publish"
+    "publish": "npm publish",
+    "precommit": "echo 'react-aleph-ui' precommit"
   },
   "dependencies": {
     "next": "12.2.0",
