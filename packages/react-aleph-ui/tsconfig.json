@@ -1,0 +1,11 @@
+{
+  "extends": "tsconfig/react-library.json",
+  "include": ["src"],
+  "exclude": ["dist", "types", "node_modules"],
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+    "outDir": "types",
+    // make an entry point with isolated module
+    "isolatedModules": true
+  }
+}

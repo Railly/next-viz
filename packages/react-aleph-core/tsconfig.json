@@ -1,0 +1,9 @@
+{
+  "extends": "tsconfig/base.json",
+  "compilerOptions": {
+    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+    "resolveJsonModule": true /* Enable importing .json files. */
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["**/*.config.ts", "__tests__/**/*.ts", "dist"]
+}

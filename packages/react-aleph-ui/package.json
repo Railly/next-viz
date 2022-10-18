@@ -1,0 +1,34 @@
+{
+  "name": "@railly/react-aleph-ui",
+  "private": true,
+  "version": "0.0.0",
+  "files": [
+    "dist/react-aleph-ui.es.js",
+    "dist/react-aleph-ui.umd.js",
+    "dist/style.css"
+  ],
+  "types": "types/App.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/react-aleph-ui.es.js",
+      "require": "./dist/react-aleph-ui.umd.js"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "set TIMING=1 eslint \"**/*.ts*\""
+  },
+  "devDependencies": {
+    "@types/react": "18.0.17",
+    "@types/react-dom": "18.0.6",
+    "@vitejs/plugin-react": "2.1.0",
+    "eslint-config-custom": "*",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "4.6.4",
+    "vite": "3.1.0"
+  }
+}

@@ -1,19 +1,10 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
+  root: true,
+  // This tells ESLint to load the config from the package `eslint-config-custom`
+  extends: ["custom"],
+  settings: {
+    next: {
+      rootDir: ["apps/*/"],
+    },
   },
-  extends: [
-    "plugin:react/recommended",
-    "standard-with-typescript",
-    "plugin:prettier/recommended",
-  ],
-  overrides: [],
-  parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-  },
-  plugins: ["react"],
-  rules: {},
 };

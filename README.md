@@ -9,11 +9,10 @@ I will document my journey on my [personal website](https://raillyhugo.com).
 - [x] Create base code for CLI (`react-aleph-cli`)
 - [x] Create base code for Core (`react-aleph-core`)
 - [x] Create base code for UI (`react-aleph-ui`)
-- [x] Setup monorepo with npm workspaces
-- [x] Setup lerna for managing monorepo flow
-- [x] Setup eslint with linting rules
-- [x] Setup prettier with formatting rules
-- [x] Setup husky and sync with lerna flow
+- [x] Setup monorepo with [Turborepo](https://turborepo.org)
+- [ ] Make packages publishable by reading Turborepo docs
+- [ ] Create an AST parser for React projects
+- [ ] Create a React component tree visualizer with [React Flow](https://reactflow.dev)
 - [ ] ...
 
 ## Installation
