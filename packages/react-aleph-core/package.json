@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "tsc && node --es-module-specifier-resolution=node ./dist/index.js",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "build:tsc": "tsc -p .",
     "test": "test",
     "publish": "npm publish",
     "precommit": "echo 'react-aleph-core' precommit"
@@ -15,10 +17,11 @@
     "parser",
     "performance"
   ],
-  "dependencies": {},
   "devDependencies": {
     "@swc/cli": "0.1.57",
-    "@swc/core": "1.2.204"
+    "@swc/core": "1.2.204",
+    "@types/eslint": "^8.4.6",
+    "tsup": "^6.3.0"
   },
   "author": "Railly Hugo",
   "license": "ISC",
