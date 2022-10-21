@@ -1,20 +1,35 @@
 import { Command } from "commander";
+import clear from "clear";
+import chalk from "chalk";
+import figlet from "figlet";
+
 const program = new Command();
 
-program
-  .name("string-util")
-  .description("CLI to some JavaScript string utilities")
-  .version("0.8.0");
+clear();
+// with version
+const version = "0.0.0";
+console.log(chalk.magenta.bold("React Aleph CLI v" + version));
 
 program
-  .command("split")
-  .description("Split a string into substrings and display as an array")
-  .argument("<string>", "string to split")
-  .option("--first", "display just the first substring")
-  .option("-s, --separator <char>", "separator character", ",");
-// .action((str: any, options: any) => {
-//   const limit = options.first ? 1 : undefined;
-//   console.log(str.split(options.separator, limit));
-// });
+  .name("react-aleph")
+  .description("CLI to some JavaScript string utilities")
+  .version(version, "-v, --version", "output the current version");
+
+program
+  .command("hello")
+  .description("Say hello!")
+  .action(() => {
+    console.log("Hello World!");
+  });
+
+// get file system path
+program
+  .command("path")
+  .description("Get file system path")
+  .action(() => {
+    console.log("Get file system path");
+    console.log(__dirname);
+    console.log(__filename);
+  });
 
 program.parse();

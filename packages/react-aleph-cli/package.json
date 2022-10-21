@@ -1,11 +1,9 @@
 {
-  "name": "@railly/react-aleph-cli",
-  "version": "0.0.1",
+  "name": "react-aleph-cli",
+  "version": "0.0.0",
   "description": "React Aleph Official CLI",
   "main": "./dist/index.js",
-  "bin": {
-    "react-aleph-cli": "./dist/index.js"
-  },
+  "bin": "./dist/index.js",
   "scripts": {
     "start": "nodemon --watch src/**/*.ts --exec \"ts-node --esm\" src/index.ts",
     "create": "npm run build && npm run test",
@@ -36,7 +34,8 @@
     "path": "0.12.7"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
     "tsup": "^6.3.0"
   }
 }

@@ -1,4 +1,4 @@
-import App from "@railly/react-aleph-ui";
+import App from "react-aleph-ui";
 
 export default function Web() {
   return (
