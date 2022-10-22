@@ -1,6 +1,6 @@
 {
   "name": "@next-viz/cli",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Next Viz CLI",
   "main": "./dist/index.js",
   "bin": {
@@ -10,13 +10,13 @@
   "scripts": {
     "start": "nodemon --watch src/**/*.ts --exec \"ts-node --esm\" src/index.ts",
     "create": "npm run build && npm run test",
-    "build": "tsup src/index.ts --format esm,cjs --dts && sed -i '1s/^/#!\\/usr\\/bin\\/env node\\n/' dist/index.js",
+    "build": "tsup src/index.ts --format esm,cjs --dts dist/index.js",
     "build:tsc": "tsc -p .",
     "test": "test",
-    "local": "npm i -g && react-aleph-cli",
+    "local": "npm i -g && next-viz",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm i",
     "publish": "npm publish",
-    "precommit": "echo 'react-aleph-cli' precommit"
+    "precommit": "echo '@next-viz/cli' precommit"
   },
   "keywords": [
     "next-viz",
@@ -42,5 +42,9 @@
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "tsup": "^6.3.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Railly/next-viz/issues"
+  },
+  "homepage": "https://github.com/Railly/next-viz/tree/main/packages/next-viz-cli#readme"
 }
