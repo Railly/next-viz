@@ -10,7 +10,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "precommit": "turbo run precommit --filter=[HEAD~1] --color",
+    "precommit": "turbo run precommit --filter=\"{./packages/*}[HEAD^1]\" --color",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",

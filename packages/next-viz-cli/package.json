@@ -10,7 +10,7 @@
   "scripts": {
     "start": "nodemon --watch src/**/*.ts --exec \"ts-node --esm\" src/index.ts",
     "create": "npm run build && npm run test",
-    "build": "tsup src/index.ts --format esm,cjs --dts && sed -i '1s/^/#!\\/usr\\/bin\\/env node\\n/' dist/index.js",
+    "build": "tsup src/index.ts --format esm,cjs --dts dist/index.js",
     "build:tsc": "tsc -p .",
     "test": "test",
     "local": "npm i -g && react-aleph-cli",
