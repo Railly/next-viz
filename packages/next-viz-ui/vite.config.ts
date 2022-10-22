@@ -7,13 +7,15 @@ const current = fileURLToPath(import.meta.url);
 const root = path.dirname(current);
 
 export default defineConfig({
-  plugins: [react({
-    include: [/\.tsx?$/, /\.jsx?$/, /\.css$/]
-  })],
+  plugins: [
+    react({
+      include: [/\.tsx?$/, /\.jsx?$/, /\.css$/],
+    }),
+  ],
   build: {
     lib: {
       entry: path.resolve(root, "src/App.tsx"),
-      name: "@react-aleph-ui",
+      name: "react-aleph-ui",
       fileName: (format) => `react-aleph-ui.${format}.js`,
     },
     rollupOptions: {
