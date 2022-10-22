@@ -10,11 +10,12 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "precommit": "turbo run precommit --filter=[HEAD^1]",
+    "precommit": "turbo run precommit --filter=[HEAD~1] --color",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build && changeset version && changeset publish"
+    "release": "turbo run build && changeset version && changeset publish",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@swc/cli": "0.1.57",

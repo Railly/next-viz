@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/base.json",
+  "extends": "../tsconfig/base.json",
   "compilerOptions": {
     "lib": ["es6", "es2017"],
     "declaration": true,

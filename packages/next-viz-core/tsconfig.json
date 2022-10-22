@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/base.json",
+  "extends": "../tsconfig/base.json",
   "compilerOptions": {
     "outDir": "./dist" /* Specify an output folder for all emitted files. */,
     "module": "esnext" /* Specify what module code is generated. */,
