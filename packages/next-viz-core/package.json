@@ -10,7 +10,7 @@
     "build:tsc": "tsc -p .",
     "test": "test",
     "publish": "npm publish",
-    "precommit": "echo 'react-aleph-core' precommit"
+    "precommit": "echo '@next-viz/core'"
   },
   "keywords": [
     "core",

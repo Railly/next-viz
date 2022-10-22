@@ -45,6 +45,8 @@ const addScriptToPackageJson = async (scriptName: string) => {
     packageJson.scripts.viz = scriptName;
     const location = path.join(process.cwd(), "package.json");
 
+    // TODO: use npm pkg set scripts.viz next-viz start
+
     writeFile(location, JSON.stringify(packageJson, null, 2)).then(
       () => {
         logger.success("Script added to package.json");

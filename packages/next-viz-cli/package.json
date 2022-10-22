@@ -4,7 +4,8 @@
   "description": "Next Viz CLI",
   "main": "./dist/index.js",
   "bin": {
-    "next-viz": "./dist/index.js"
+    "next-viz": "./dist/index.js",
+    "precommit": "echo '@next-viz/cli'"
   },
   "scripts": {
     "start": "nodemon --watch src/**/*.ts --exec \"ts-node --esm\" src/index.ts",

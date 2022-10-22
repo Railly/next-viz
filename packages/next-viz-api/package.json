@@ -8,7 +8,8 @@
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "swc src -d dist --source-maps --copy-files",
-    "build:tsc": "tsc && tsc-alias"
+    "build:tsc": "tsc && tsc-alias",
+    "precommit": "echo '@next-viz/api'"
   },
   "dependencies": {
     "bcrypt": "5.0.1",

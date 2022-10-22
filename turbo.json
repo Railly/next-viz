@@ -10,6 +10,10 @@
     },
     "dev": {
       "cache": false
+    },
+    "precommit": {
+      "cache": false,
+      "outputs": []
     }
   }
 }

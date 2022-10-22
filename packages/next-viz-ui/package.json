@@ -3,15 +3,15 @@
   "description": "Next Viz UI",
   "version": "0.0.0",
   "files": [
-    "dist/react-aleph-ui.es.js",
-    "dist/react-aleph-ui.umd.js",
+    "dist/next-viz-ui.es.js",
+    "dist/next-viz-ui.umd.js",
     "dist/style.css"
   ],
   "types": "types/App.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/react-aleph-ui.es.js",
-      "require": "./dist/react-aleph-ui.umd.js"
+      "import": "./dist/next-viz-ui.es.js",
+      "require": "./dist/next-viz-ui.umd.js"
     }
   },
   "type": "module",
@@ -19,7 +19,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "set TIMING=1 eslint \"**/*.ts*\""
+    "lint": "set TIMING=1 eslint \"**/*.ts*\"",
+    "precommit": "echo '@next-viz/ui'"
   },
   "devDependencies": {
     "@types/react": "18.0.17",
