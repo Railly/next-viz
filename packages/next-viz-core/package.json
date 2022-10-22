@@ -1,6 +1,6 @@
 {
   "name": "@next-viz/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Next Viz Core",
   "main": "./dist/index.js",
   "type": "module",

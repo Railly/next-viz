@@ -1,6 +1,6 @@
 {
   "name": "@next-viz/cli",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Next Viz CLI",
   "main": "./dist/index.js",
   "bin": {

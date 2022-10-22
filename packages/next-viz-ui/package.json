@@ -1,7 +1,7 @@
 {
   "name": "@next-viz/ui",
   "description": "Next Viz UI",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "files": [
     "dist/next-viz-ui.es.js",
     "dist/next-viz-ui.umd.js",
