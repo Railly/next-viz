@@ -26,7 +26,7 @@
   "author": "Railly Hugo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Railly/react-aleph/issues"
+    "url": "https://github.com/Railly/next-viz/issues"
   },
-  "homepage": "https://github.com/Railly/react-aleph#readme"
+  "homepage": "https://github.com/Railly/next-viz/tree/main/packages/next-viz-core#readme"
 }

@@ -52,5 +52,9 @@
     "tsc-alias": "1.7.0",
     "tsconfig-paths": "4.0.0",
     "typescript": "4.7.4"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Railly/next-viz/issues"
+  },
+  "homepage": "https://github.com/Railly/next-viz/tree/main/packages/next-viz-api#readme"
 }

@@ -1,16 +1,17 @@
-# React Aleph - Developer Visualization Tool
+# Next Viz
 
-This is the react-aleph monorepo. With this tool you can parse your React projects and visualize its component tree, quality metrics and more.
-
+Visualizer for Next.js projects.
 I will document my journey on my [personal website](https://raillyhugo.com).
 
 ## Roadmap
 
-- [x] Create base code for CLI (`react-aleph-cli`)
-- [x] Create base code for Core (`react-aleph-core`)
-- [x] Create base code for UI (`react-aleph-ui`)
+- [x] Create base code for CLI (`@next-viz/cli`)
+- [x] Create base code for Core (`@next-viz/core`)
+- [x] Create base code for UI (`@next-viz/ui`)
 - [x] Setup monorepo with [Turborepo](https://turborepo.org)
-- [ ] Make packages publishable by reading Turborepo docs
+- [x] Make packages publishable by reading Turborepo docs
+- [ ] Make proof of concept for CLI **(Currently working on it)**
+- [ ] Setup CI/CD with Github Actions
 - [ ] Create an AST parser for React projects
 - [ ] Create a React component tree visualizer with [React Flow](https://reactflow.dev)
 - [ ] ...
@@ -27,6 +28,10 @@ Working on it
 
 Working on it
 
+## Author
+
+- Railly Hugo ([@raillyhugo](https://twitter.com/raillyhugo))
+
 ## License
 
-Working on it
+[MPL-2.0](https://choosealicense.com/licenses/mpl-2.0/)
