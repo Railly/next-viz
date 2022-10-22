@@ -1,5 +1,5 @@
 {
-  "name": "react-aleph",
+  "name": "next-viz",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
@@ -12,13 +12,14 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "publish-packages": "turbo run build && changeset version && changeset publish"
+
   },
   "devDependencies": {
-    "eslint-config-custom": "*",
-    "prettier": "latest",
-    "turbo": "latest",
     "@swc/cli": "0.1.57",
-    "@swc/core": "1.3.9"
+    "@swc/core": "1.3.9",
+    "eslint-config-custom": "*",
+    "prettier": "^2.7.1",
+    "turbo": "latest"
   },
   "engines": {
     "node": ">=14.0.0"

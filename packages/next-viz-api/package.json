@@ -1,7 +1,7 @@
 {
-  "name": "react-aleph-api",
+  "name": "@next-viz/api",
   "version": "0.0.0",
-  "description": "React Aleph Official API",
+  "description": "Next Viz API",
   "author": "Railly Hugo",
   "license": "ISC",
   "scripts": {

@@ -1,4 +1,4 @@
-import App from "react-aleph-ui";
+import App from "@next-viz/ui";
 
 export default function Web() {
   return (

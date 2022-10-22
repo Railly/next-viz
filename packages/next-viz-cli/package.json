@@ -1,13 +1,15 @@
 {
-  "name": "react-aleph-cli",
+  "name": "@next-viz/cli",
   "version": "0.0.0",
-  "description": "React Aleph Official CLI",
+  "description": "Next Viz CLI",
   "main": "./dist/index.js",
-  "bin": "./dist/index.js",
+  "bin": {
+    "next-viz": "./dist/index.js"
+  },
   "scripts": {
     "start": "nodemon --watch src/**/*.ts --exec \"ts-node --esm\" src/index.ts",
     "create": "npm run build && npm run test",
-    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "build": "tsup src/index.ts --format esm,cjs --dts && sed -i '1s/^/#!\\/usr\\/bin\\/env node\\n/' dist/index.js",
     "build:tsc": "tsc -p .",
     "test": "test",
     "local": "npm i -g && react-aleph-cli",
@@ -16,7 +18,7 @@
     "precommit": "echo 'react-aleph-cli' precommit"
   },
   "keywords": [
-    "react-aleph",
+    "next-viz",
     "visualization",
     "performance",
     "statistics"
@@ -31,9 +33,11 @@
     "commander": "9.3.0",
     "commitizen": "^4.2.5",
     "figlet": "1.5.2",
+    "gradient-string": "^2.0.2",
     "path": "0.12.7"
   },
   "devDependencies": {
+    "@types/gradient-string": "^1.1.2",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "tsup": "^6.3.0"

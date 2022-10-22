@@ -1,4 +1,4 @@
-const withTM = require("next-transpile-modules")(["react-aleph-ui"]);
+const withTM = require("next-transpile-modules")(["@next-viz/ui"]);
 
 module.exports = withTM({
   reactStrictMode: true,

@@ -1,6 +1,6 @@
 const withTM = require("next-transpile-modules")([
-  "react-aleph-ui",
-  "react-aleph-cli",
+  "@next-viz/ui",
+  "@next-viz/cli",
 ]);
 
 module.exports = withTM({
