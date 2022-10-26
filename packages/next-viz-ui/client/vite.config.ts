@@ -1,39 +1,32 @@
 import path from "path";
-import { VitePluginNode } from "vite-plugin-node";
 import { fileURLToPath } from "url";
 import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 const current = fileURLToPath(import.meta.url);
 const root = path.dirname(current);
 
 export default defineConfig({
   plugins: [
-    VitePluginNode({
-      adapter: "express",
-      appPath: "./src/index.ts",
+    react({
+      include: [/\.tsx?$/, /\.jsx?$/, /\.css$/],
     }),
   ],
-  optimizeDeps: {
-    include: ["react", "react-dom", "react/jsx-runtime"],
-  },
   build: {
+    manifest: true,
     lib: {
-      entry: path.resolve(root, "src/index.ts"),
+      entry: path.resolve(root, "src/main.tsx"),
       name: "next-viz-ui",
-      fileName: (format) => `index.${format}.js`,
+      fileName: (format) => `next-viz-ui.${format}.js`,
     },
     rollupOptions: {
-      external: ["express", "react", "react-dom", "react/jsx-runtime"],
+      input: "src/main.tsx",
+      external: ["react", "react-dom", "react/jsx-runtime"],
       output: {
         globals: {
-          vite: "vite",
-          express: "express",
           react: "React",
           "react-dom": "ReactDOM",
           "react/jsx-runtime": "react/jsx-runtime.js",
-          fs: "fs",
-          path: "path",
-          url: "url",
         },
       },
     },
