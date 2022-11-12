@@ -1,36 +1,49 @@
 import { ESLint } from "eslint";
 import fs from "fs";
-import { Compiler } from "@swc/core";
-import { Traverser } from "../traverser";
-import ast from "../module.json" assert { type: "json" };
+import path from "path";
+import swc from "@swc/core";
+import { fileURLToPath } from "url";
+import { Visitor } from "./Visitor";
 
-const visitor = {
-  VariableDeclaration: {
-    enter(node: any, parent: any) {
-      console.log("VariableDeclaration Enter", node);
-    },
-    exit(node: any, parent: any) {
-      console.log("VariableDeclaration Exit", node);
-    },
-  },
-  VariableDeclarator: {
-    enter(node: any, parent: any) {
-      console.log("VariableDeclarator Enter", node);
-    },
-    exit(node: any, parent: any) {
-      console.log("VariableDeclarator Exit", node);
-    },
-  },
-  Identifier: {
-    enter(node: any, parent: any) {
-      console.log("Identifier Enter", node);
-    },
-    exit(node: any, parent: any) {
-      console.log("Identifier Exit", node);
-    },
-  },
-};
+const __dirname = path
+  .dirname(fileURLToPath(import.meta.url))
+  .split(path.sep)
+  .slice(0, -1)
+  .join(path.sep);
 
-// Create a new Traverser instance
-const traverser = new Traverser(ast, visitor);
-traverser.traverseProgram();
+const myTSX = fs.readFileSync(
+  path.resolve(__dirname, "src", "test.tsx"),
+  "utf-8"
+);
+
+swc
+  .parse(myTSX, {
+    syntax: "typescript",
+    target: "es2015",
+    tsx: true,
+    decorators: true,
+  })
+  .then(async (ast) => {
+    const visitor = new Visitor();
+    visitor.visitModule(ast);
+    console.log(visitor.getImports());
+    // console.log(visitor.getHooks());
+    // console.log(visitor.getExports());
+    // console.log(visitor.getComponents());
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+const a = swc.transformSync(myTSX, {
+  jsc: {
+    parser: {
+      syntax: "typescript",
+      tsx: true,
+    },
+    target: "es2015",
+  },
+  plugin: (c) => {
+    return new Visitor().visitProgram(c);
+  },
+});

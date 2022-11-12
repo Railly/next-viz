@@ -28,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/Railly/next-viz/issues"
   },
-  "homepage": "https://github.com/Railly/next-viz/tree/main/packages/next-viz-core#readme"
+  "homepage": "https://github.com/Railly/next-viz/tree/main/packages/next-viz-core#readme",
+  "dependencies": {
+    "react-hot-toast": "^2.4.0"
+  }
 }
