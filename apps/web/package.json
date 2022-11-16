@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "viz": "next-viz start"
+    "viz": "next-viz start",
+    "viz:parse": "next-viz parse"
   },
   "dependencies": {
     "@next-viz/cli": "*",
