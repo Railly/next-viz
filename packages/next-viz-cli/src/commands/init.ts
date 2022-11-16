@@ -4,8 +4,24 @@ import {
   verifyFileExists,
   writeFile,
   writeNewFile,
-} from "./utils/fs-extra";
-import { logger } from "./utils/loggers";
+} from "../utils/fs-extra";
+import { logger } from "../utils/loggers";
+import shelljs from "shelljs";
+
+export const initiateNextViz = async () => {
+  try {
+    logger.viz("Next Viz, a visualizer for Next.js");
+    logger.info("Initializing Next Viz");
+    generateNextVizConfigInCWD();
+    addScriptToPackageJson("next-viz start");
+    logger.success("Next Viz initialized successfully");
+  } catch (err) {
+    logger.error("Something went wrong while initializing Next Viz", {
+      err,
+    });
+    process.exit(0);
+  }
+};
 
 export const generateNextVizConfigInCWD = () => {
   const target = process.cwd();
@@ -14,13 +30,11 @@ export const generateNextVizConfigInCWD = () => {
 
 export const generateNextVizConfig = async ({ target }: { target: string }) => {
   try {
-    logger.viz("Next Viz, a visualizer for Next.js");
     logger.info(
       `Generating Next Viz config at ${path.basename(target)} folder`
     );
     verifyFileExists("next.config.js");
     await writeNewFile("viz.config.js", "module.exports = {}");
-    addScriptToPackageJson("next-viz start");
     logger.success("Next Viz config generated successfully");
   } catch (err) {
     logger.error("Something went wrong while generating config", {
@@ -46,8 +60,7 @@ const addScriptToPackageJson = async (scriptName: string) => {
     const location = path.join(process.cwd(), "package.json");
 
     // TODO: use npm pkg set scripts.viz next-viz start
-
-    writeFile(location, JSON.stringify(packageJson, null, 2)).then(
+    writeFile(location, `${JSON.stringify(packageJson, null, 2)}\n`).then(
       () => {
         logger.success("Script added to package.json");
       },

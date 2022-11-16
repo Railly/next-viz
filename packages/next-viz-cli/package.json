@@ -1,16 +1,21 @@
 {
   "name": "@next-viz/cli",
+  "type": "module",
   "version": "0.0.1",
   "description": "Next Viz CLI",
   "main": "./dist/index.js",
   "bin": {
-    "next-viz": "./dist/index.js",
-    "precommit": "echo '@next-viz/cli'"
+    "next-viz": "./dist/program.js"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "types": "src/types.d.ts",
   "scripts": {
     "start": "nodemon --watch src/**/*.ts --exec \"ts-node --esm\" src/index.ts",
     "create": "npm run build && npm run test",
-    "build": "tsup src/index.ts --format esm,cjs --dts dist/index.js",
+    "build": "tsup",
     "build:tsc": "tsc -p .",
     "test": "test",
     "local": "npm i -g && next-viz",
@@ -27,6 +32,8 @@
   "author": "Railly Hugo",
   "license": "ISC",
   "dependencies": {
+    "@next-viz/core": "*",
+    "@next-viz/ui": "*",
     "@types/clear": "^0.1.2",
     "@types/figlet": "^1.5.4",
     "chalk": "4.1.2",
@@ -35,13 +42,15 @@
     "commitizen": "^4.2.5",
     "figlet": "1.5.2",
     "gradient-string": "^2.0.2",
-    "path": "0.12.7"
+    "path": "0.12.7",
+    "shelljs": "^0.8.5"
   },
   "devDependencies": {
-    "@types/gradient-string": "^1.1.2",
-    "nodemon": "^2.0.20",
-    "ts-node": "^10.9.1",
-    "tsup": "^6.3.0"
+    "@types/gradient-string": "1.1.2",
+    "@types/shelljs": "0.8.11",
+    "nodemon": "2.0.20",
+    "ts-node": "10.9.1",
+    "tsup": "6.3.0"
   },
   "bugs": {
     "url": "https://github.com/Railly/next-viz/issues"

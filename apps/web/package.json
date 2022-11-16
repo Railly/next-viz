@@ -7,10 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "viz": "next-viz"
+    "viz": "next-viz start",
+    "viz:parse": "next-viz parse"
   },
   "dependencies": {
-    "@next-viz/ui": "*",
     "@next-viz/cli": "*",
     "next": "12.3.1",
     "react": "18.2.0",
