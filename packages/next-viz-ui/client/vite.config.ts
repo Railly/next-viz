@@ -1,7 +1,7 @@
 import path from "path";
 import { fileURLToPath } from "url";
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 
 const current = fileURLToPath(import.meta.url);
 const root = path.dirname(current);
@@ -20,7 +20,9 @@ export default defineConfig({
       fileName: (format) => `next-viz-ui.${format}.js`,
     },
     rollupOptions: {
-      input: "src/main.tsx",
+      input: {
+        main: path.resolve(root, "src/main.tsx"),
+      },
       external: ["react", "react-dom", "react/jsx-runtime"],
       output: {
         globals: {
