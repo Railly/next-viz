@@ -162,22 +162,27 @@ import {
   Import,
   SuperPropExpression,
 } from "@swc/core";
+import { JSXAttribute as JSXAttributeClass } from "./parser/JSXAttribute";
+import { JSXElement as JSXElementClass } from "./parser/JSXElement";
+import ParsedFile from "./parser/ParsedFile";
+import { TracingNode } from "./parser/TracingNode";
 
 export class Visitor {
-  imports = new Map<
-    string,
-    {
-      name: string;
-      path: string;
-      default: boolean;
-      namespace: boolean;
-      named: string[];
-    }
-  >();
+  tracingNode: TracingNode;
+  parsedFile: ParsedFile;
+  elements: JSXElementClass[] = [];
+  attributes = [new JSXAttributeClass()];
 
   hooks = new Map<Pattern, Expression | undefined>();
 
   exports = new Map<string, Expression | undefined>();
+
+  constructor(path: string, fileContent: string) {
+    this.tracingNode = new TracingNode(path, fileContent);
+    this.parsedFile = new ParsedFile(path);
+    this.elements = [new JSXElementClass(path)];
+    this.attributes = [new JSXAttributeClass()];
+  }
 
   visitProgram(n: Program): Program {
     switch (n.type) {
@@ -340,7 +345,7 @@ export class Visitor {
   visitExportDefaultDeclaration(
     n: ExportDefaultDeclaration
   ): ModuleDeclaration {
-    console.log("ExportDefaultDeclaration", n);
+    // console.log("ExportDefaultDeclaration", n);
     n.decl = this.visitDefaultDeclaration(n.decl);
     return n;
   }
@@ -356,7 +361,7 @@ export class Visitor {
     }
   }
   visitFunctionExpression(n: FunctionExpression): FunctionExpression {
-    console.log("FunctionExpression", n);
+    // console.log("FunctionExpression", n);
     n = this.visitFunction(n);
     if (n.identifier) {
       n.identifier = this.visitBindingIdentifier(n.identifier);
@@ -1444,9 +1449,33 @@ export class Visitor {
   }
   visitJSXOpeningElement(n: JSXOpeningElement): JSXOpeningElement {
     // console.log("JSXOpeningElement", n);
+    const jsxElement = this.tracingNode.peek(this.elements);
+    const attribute = this.tracingNode.peek(this.attributes);
     n.name = this.visitJSXElementName(n.name);
     n.typeArguments = this.visitTsTypeParameterInstantiation(n.typeArguments);
-    n.attributes = this.visitJSXAttributes(n.attributes);
+    n.attributes = this.visitJSXAttributeOrSpreads(n.attributes);
+
+    if (jsxElement.isUndefined()) {
+      console.log("Opening JSXElement");
+      jsxElement.open(n);
+    } else {
+      if (
+        n.name.type === "Identifier" &&
+        attribute.getElementName() === "element"
+      ) {
+        jsxElement.setName(n.name.value);
+      }
+      if (
+        attribute.getElementName() === "render" ||
+        attribute.getElementName() === "element"
+      ) {
+        console.log(
+          "Opening JSXElement within render attribute, Resetting identifier"
+        );
+        jsxElement.open(n);
+        jsxElement.resetIdentifier();
+      }
+    }
     return n;
   }
   visitJSXAttributes(
@@ -1464,10 +1493,27 @@ export class Visitor {
         return this.visitSpreadElement(n);
     }
   }
+
+  visitJSXAttributeOrSpreads(
+    nodes: JSXAttributeOrSpread[]
+  ): JSXAttributeOrSpread[] {
+    return nodes.map(this.visitJSXAttributeOrSpread.bind(this));
+  }
+
   visitJSXAttribute(n: JSXAttribute): JSXAttributeOrSpread {
     // console.log("JSXAttribute", n);
+    const attribute = this.tracingNode.peek(this.attributes);
     n.name = this.visitJSXAttributeName(n.name);
     n.value = this.visitJSXAttributeValue(n.value);
+    if (attribute.isUndefined()) {
+      console.log("Opening JSXAttribute");
+      attribute.open(n);
+    } else {
+      console.log("Opening JSXAttribute");
+      const newAttribute = new JSXAttributeClass();
+      newAttribute.open(n);
+      this.attributes.push(newAttribute);
+    }
     return n;
   }
   visitJSXAttributeValue(
@@ -1512,7 +1558,7 @@ export class Visitor {
     return n;
   }
   visitCallExpression(n: CallExpression): Expression {
-    console.log("CallExpression", n);
+    // console.log("CallExpression", n);
     n.callee = this.visitCallee(n.callee);
     n.typeArguments = this.visitTsTypeParameterInstantiation(n.typeArguments);
     if (n.arguments) {
@@ -1580,15 +1626,18 @@ export class Visitor {
     // console.log("ImportDeclaration", n);
     n.source = this.visitStringLiteral(n.source);
     n.specifiers = this.visitImportSpecifiers(n.specifiers || []);
-    this.imports.set(n.source.value, {
+    this.tracingNode.addImport({
       name: n.specifiers[0].local.value,
       path: n.source.value,
-      default: n.specifiers[0].type === "ImportDefaultSpecifier",
-      namespace: n.specifiers[0].type === "ImportNamespaceSpecifier",
+      hasDefault: n.specifiers[0].type === "ImportDefaultSpecifier",
+      hasNamespace: n.specifiers[0].type === "ImportNamespaceSpecifier",
       named: n.specifiers
         .filter((s) => s.type === "ImportSpecifier")
         .map((s) => s.local.value),
     });
+
+    // this.imports.set(n.source.value, {
+    // });
     return n;
   }
   visitImportSpecifiers(nodes: ImportSpecifier[]): ImportSpecifier[] {
@@ -1632,6 +1681,16 @@ export class Visitor {
   }
   visitIdentifierReference(i: Identifier): Identifier {
     // console.log("IdentifierReference", i);
+    const jsxElement = this.tracingNode.peek(this.elements);
+    const attribute = this.tracingNode.peek(this.attributes);
+    if (jsxElement.isOpen() && !jsxElement.isIdentified()) {
+      console.log(`Identified JSXElement:  ${i.value}`);
+      jsxElement.identify(i);
+    } else if (attribute.isOpen() && !attribute.isIdentified()) {
+      console.log(`Identified JSXAttribute: ${i.value}`);
+      attribute.identify(i);
+    }
+
     return this.visitIdentifier(i);
   }
   visitLabelIdentifier(label: Identifier): Identifier {
@@ -1744,7 +1803,11 @@ export class Visitor {
   }
 
   getImports() {
-    return this.imports;
+    return this.tracingNode.getImports();
+  }
+
+  getJSXElements() {
+    return this.tracingNode.getJSXElements();
   }
 
   getHooks() {

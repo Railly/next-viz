@@ -5,16 +5,15 @@ export class JSXElement extends ParsableNode {
   private attributes: Map<string, JSXAttribute> = new Map();
   private conditional = false;
   public isRouteElement = false;
-  public id = `${super.getPath()}:${this.getName()}:${
-    super.getLocation().start
-  }:${super.getLocation().end}`;
 
   constructor(path: string) {
     super(path);
   }
 
   getId(): string {
-    return this.id;
+    return `${super.getPath()}:${this.getName()}:${super.getLocation().start}:${
+      super.getLocation().end
+    }`;
   }
 
   addAttribute(attribute: JSXAttribute): void {
@@ -32,7 +31,7 @@ export class JSXElement extends ParsableNode {
       return attribute;
     }
     throw new Error(
-      `JSXElement.gotAttribute: This element does not have an attribute named ${key} in ${super.getLocation()}`
+      `JSXElement.getAttribute: This element does not have an attribute named ${key} in ${super.getLocation()}`
     );
   }
 

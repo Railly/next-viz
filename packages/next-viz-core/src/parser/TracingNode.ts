@@ -37,11 +37,11 @@ export class TracingNode extends ParsableNode {
   }
 
   addImport(imp: Import): void {
-    if (!super.isOpen()) {
-      throw new Error(
-        `TracingNode.addImport: This node has not been opened yet in ${super.getLocation()}`
-      );
-    }
+    // if (!super.isOpen()) {
+    //   throw new Error(
+    //     `TracingNode.addImport: This node has not been opened yet in ${super.getLocation()}`
+    //   );
+    // }
     this.imports.push(imp);
   }
 
@@ -62,5 +62,9 @@ export class TracingNode extends ParsableNode {
         `TracingNode.getLinesOfCode: This node has not been opened yet in ${super.getLocation()}`
       );
     }
+  }
+
+  peek<T>(stack: T[]): T {
+    return stack[stack.length - 1];
   }
 }

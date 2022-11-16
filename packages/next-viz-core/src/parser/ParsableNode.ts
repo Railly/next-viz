@@ -34,16 +34,16 @@ export class ParsableNode {
   isIdentified(): boolean {
     return !!this.name;
   }
-  identify(identifier: Identifier | JSXElementName): void {
+  identify(identifier: Identifier): void {
     if (this.node === undefined) {
       throw new Error(
         "ParsableElement.identify: This component has not been opened yet."
       );
     }
-    console.log(
-      "TODO: You should check identifier type before calling this method."
-    );
-    this.name = identifier.type;
+    // logger.log(
+    //   "TODO: You should check identifier type before calling this method."
+    // );
+    this.name = identifier.value;
   }
   setName(name: string): void {
     this.name = name;
@@ -54,7 +54,10 @@ export class ParsableNode {
 
   getElementName(): string {
     if (!this.isOpen()) {
-      throw new Error(
+      // throw new Error(
+      //   "ParsableElement.getElementName: This component has not been opened yet."
+      // );
+      console.warn(
         "ParsableElement.getElementName: This component has not been opened yet."
       );
     }
@@ -62,7 +65,9 @@ export class ParsableNode {
     if (this.name) {
       return this.name;
     }
-    throw new Error("This component has not been identified yet.");
+    // throw new Error("This component has not been identified yet.");
+    console.warn("This component has not been identified yet.");
+    return "";
   }
 
   getLocation(): Location {
