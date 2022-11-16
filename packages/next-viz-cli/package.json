@@ -1,15 +1,21 @@
 {
   "name": "@next-viz/cli",
+  "type": "module",
   "version": "0.0.1",
   "description": "Next Viz CLI",
   "main": "./dist/index.js",
   "bin": {
-    "next-viz": "./dist/index.js"
+    "next-viz": "./dist/program.js"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "types": "src/types.d.ts",
   "scripts": {
     "start": "nodemon --watch src/**/*.ts --exec \"ts-node --esm\" src/index.ts",
     "create": "npm run build && npm run test",
-    "build": "tsup src/index.ts --format esm,cjs --dts dist/index.js",
+    "build": "tsup",
     "build:tsc": "tsc -p .",
     "test": "test",
     "local": "npm i -g && next-viz",
@@ -26,6 +32,7 @@
   "author": "Railly Hugo",
   "license": "ISC",
   "dependencies": {
+    "@next-viz/core": "*",
     "@next-viz/ui": "*",
     "@types/clear": "^0.1.2",
     "@types/figlet": "^1.5.4",

@@ -4,8 +4,8 @@ import {
   verifyFileExists,
   writeFile,
   writeNewFile,
-} from "./utils/fs-extra";
-import { logger } from "./utils/loggers";
+} from "../utils/fs-extra";
+import { logger } from "../utils/loggers";
 import shelljs from "shelljs";
 
 export const initiateNextViz = async () => {

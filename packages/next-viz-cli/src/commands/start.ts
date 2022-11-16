@@ -1,6 +1,6 @@
 import clear from "clear";
 import chalk from "chalk";
-import { logger } from "./utils/loggers";
+import { logger } from "../utils/loggers";
 import shelljs from "shelljs";
 import { createViteServer } from "@next-viz/ui";
 
