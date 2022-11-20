@@ -5,6 +5,13 @@ import { parseNextJSProject } from "./commands/parse";
 import { startNextViz } from "./commands/start";
 import { getPackageJson } from "./utils/fs-extra";
 
+const options = {
+  rootFolderPath: process.cwd(),
+  rootComponents: ["pages", "components"],
+  pathToSaveDir: ".next-viz",
+  log: true,
+};
+
 const program = new Command();
 
 program
@@ -16,11 +23,15 @@ program
 program
   .command("start")
   .description("Start Next Viz server")
-  .action(startNextViz);
+  .action(async () => {
+    await startNextViz(options);
+  });
 
 program
   .command("parse")
   .description("Parse Next.js root directory")
-  .action(parseNextJSProject);
+  .action(async () => {
+    await parseNextJSProject(options);
+  });
 
 program.parse(process.argv);

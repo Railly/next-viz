@@ -1,16 +1,13 @@
 import clear from "clear";
-import chalk from "chalk";
 import { logger } from "../utils/loggers";
-import shelljs from "shelljs";
 import { createViteServer } from "@next-viz/ui";
+import { ParserOptions } from "@next-viz/core";
 
-const PORT = 3001;
-
-export const startNextViz = async () => {
+export const startNextViz = async (options: ParserOptions) => {
   try {
     clear();
-    await createViteServer(PORT);
-    logger.viz(`Next Viz is running on: http://localhost:${PORT}`);
+    await createViteServer(options);
+    logger.viz("Next Viz is running on: http://localhost:3001");
   } catch (err) {
     logger.error("Something went wrong while starting Next Viz", {
       err,

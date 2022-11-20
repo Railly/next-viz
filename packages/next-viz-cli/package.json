@@ -49,8 +49,7 @@
     "@types/gradient-string": "1.1.2",
     "@types/shelljs": "0.8.11",
     "nodemon": "2.0.20",
-    "ts-node": "10.9.1",
-    "tsup": "6.3.0"
+    "ts-node": "10.9.1"
   },
   "bugs": {
     "url": "https://github.com/Railly/next-viz/issues"
