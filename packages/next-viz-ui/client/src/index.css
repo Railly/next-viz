@@ -52,7 +52,7 @@ body {
   content: '';
   position: absolute;
   padding-bottom: calc(100% * 1.41421356237);
-  width: calc(100% * 1.41421356237);
+  width: calc(100% * 1.51421356237);
   background: conic-gradient(
     from -160deg at 50% 50%,
     #1FCEE5 0deg,

@@ -7,9 +7,8 @@ import { AccordionChevron } from "./Accordion/styles";
 import CloudIcon from "./CloudIcon";
 
 export type TracingNodeData = {
-  title: string;
-  icon?: ReactNode;
-  subline?: string;
+  path: string;
+  imports: any[];
 };
 
 const TitleContainer = styled("div", {
@@ -24,14 +23,6 @@ const TitleContainer = styled("div", {
     position: "absolute",
     right: "0.5rem",
   },
-});
-
-const BodyContainer = styled("div", {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: "100%",
-  height: "100%",
 });
 
 const TransparentButton = styled("button", {
@@ -53,31 +44,16 @@ const VizTracingNode = ({ data }: NodeProps<TracingNodeData>) => {
       <div className="wrapper gradient">
         <div className="inner">
           <TitleContainer>
-            <div className="title">{data.title}</div>
+            <div className="title">{data.path}</div>
             <TransparentButton className="dots">
               <DotsVerticalIcon />
             </TransparentButton>
           </TitleContainer>
           {/* {data.icon && <div className="icon">{data.icon}</div>} */}
-          <TracingAccordion
-            fileName="index.tsx"
-            imports={[
-              {
-                name: "React",
-                path: "react",
-                hasDefault: true,
-                hasNamespace: false,
-                named: [],
-              },
-              {
-                name: "styled",
-                path: "@stitches/react",
-                hasDefault: false,
-                hasNamespace: false,
-                named: ["styled"],
-              },
-            ]}
-          />
+          {console.log({
+            imports: data.imports,
+          })}
+          <TracingAccordion fileName="index.tsx" imports={data.imports} />
           <Handle type="target" position={Position.Left} />
           <Handle type="source" position={Position.Right} />
         </div>

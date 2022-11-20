@@ -1,6 +1,6 @@
 import path from "path";
 import { fileURLToPath } from "url";
-import react from "@vitejs/plugin-react";
+import VitePluginReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 const current = fileURLToPath(import.meta.url);
@@ -8,7 +8,7 @@ const root = path.dirname(current);
 
 export default defineConfig({
   plugins: [
-    react({
+    VitePluginReact({
       include: [/\.tsx?$/, /\.jsx?$/, /\.css$/],
     }),
   ],

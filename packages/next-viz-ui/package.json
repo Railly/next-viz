@@ -24,24 +24,26 @@
   "devDependencies": {
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
-    "@vitejs/plugin-react": "2.2.0",
+    "@vitejs/plugin-react": "^2.2.0",
     "eslint-config-custom": "*",
+    "magic-string": "^0.26.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tsup": "6.5.0",
     "typescript": "4.6.4",
     "vite": "3.2.4",
-    "vite-plugin-node": "^1.0.0"
+    "vite-plugin-node": "1.0.0"
   },
   "bugs": {
     "url": "https://github.com/Railly/next-viz/issues"
   },
   "homepage": "https://github.com/Railly/next-viz/tree/main/packages/next-viz-ui#readme",
   "dependencies": {
-    "@radix-ui/react-accordion": "^1.0.1",
-    "@radix-ui/react-icons": "^1.1.1",
-    "@stitches/react": "^1.2.8",
+    "@next-viz/api": "*",
+    "@radix-ui/react-accordion": "1.0.1",
+    "@radix-ui/react-icons": "1.1.1",
+    "@stitches/react": "1.2.8",
+    "cors": "2.8.5",
     "express": "4.18.2",
-    "reactflow": "^11.2.0"
+    "reactflow": "11.2.0"
   }
 }

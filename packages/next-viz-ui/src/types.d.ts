@@ -1,3 +1,3 @@
 declare module "@next-viz/ui" {
-  export const createViteServer: (port: number) => Promise<void>;
+  export const createViteServer: (options: any) => Promise<void>;
 }

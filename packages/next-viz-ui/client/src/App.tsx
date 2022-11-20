@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ReactFlow, {
   Controls,
   useNodesState,
@@ -10,8 +10,6 @@ import ReactFlow, {
   Background,
 } from "reactflow";
 
-import "reactflow/dist/base.css";
-import "./index.css";
 import TracingNode, { TracingNodeData } from "./components/TracingNode";
 import TracingEdge from "./components/TracingEdge";
 import FunctionIcon from "./components/FunctionIcon";
@@ -104,13 +102,33 @@ const GraphPanelContainer = styled("div", {
 });
 
 const Flow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [testNodes, setTestNodes] = useState([]);
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((els) => addEdge(params, els)),
     []
   );
+
+  useEffect(() => {
+    const getTestNodes = async () => {
+      const response = await window.fetch("/api/tracing-nodes");
+      const data = await response.json();
+      setTestNodes(data);
+      const newData = data.map((node: any) => ({
+        id: node.path,
+        data: {
+          ...node,
+        },
+        type: "nextviz",
+        position: { x: 0, y: 0 },
+      }));
+      setNodes(newData);
+    };
+
+    getTestNodes();
+  }, []);
 
   return (
     <GraphPanelContainer>

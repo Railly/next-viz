@@ -15,18 +15,36 @@ interface IAccordionProps {
   imports: TracingNodeImport[];
 }
 
-const TracingAccordion: React.FC<IAccordionProps> = ({ fileName, imports }) => (
-  <s.AccordionRoot type="single" defaultValue="item-1" collapsible>
-    <s.AccordionItem value={`imports-${fileName}`}>
-      <AccordionTrigger>Imports</AccordionTrigger>
-      {imports.map((imp, index) => (
-        <AccordionContent>
-          <div className="AccordionContentText">- {imp.path}</div>
-        </AccordionContent>
-      ))}
-    </s.AccordionItem>
-  </s.AccordionRoot>
-);
+const TracingAccordion: React.FC<IAccordionProps> = ({ fileName, imports }) => {
+  const firstTrigger = React.useRef<HTMLButtonElement>(null);
+  const secondTrigger = React.useRef<HTMLButtonElement>(null);
+
+  return (
+    <s.AccordionRoot type="multiple" defaultValue="item-1" collapsible>
+      <s.AccordionItem value={`imports-${fileName}`}>
+        <AccordionTrigger ref={firstTrigger}>Imports</AccordionTrigger>
+        {console.log({ imports })}
+        {imports.map((imp, index) => (
+          <AccordionContent noPadding key={`imports-${fileName}-${index}`}>
+            <s.AccordionItem value={`imports-${fileName}-${index}`}>
+              <AccordionTrigger prefix="-" ref={secondTrigger}>
+                {imp.path}
+              </AccordionTrigger>
+              {imp.named.length > 0 &&
+                imp.named.map((named, index) => (
+                  <AccordionContent
+                    key={`imports-${fileName}-${index}-${named}`}
+                  >
+                    <div className="AccordionContentText">- {named}</div>
+                  </AccordionContent>
+                ))}
+            </s.AccordionItem>
+          </AccordionContent>
+        ))}
+      </s.AccordionItem>
+    </s.AccordionRoot>
+  );
+};
 
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof Trigger>,
@@ -45,9 +63,15 @@ AccordionTrigger.displayName = "AccordionTrigger";
 const AccordionContent = React.forwardRef<
   React.ElementRef<typeof Content>,
   React.ComponentPropsWithoutRef<typeof Content>
->(({ children, ...props }, forwardedRef) => (
+>(({ children, noPadding, ...props }, forwardedRef) => (
   <s.AccordionContent {...props} ref={forwardedRef}>
-    <div className="AccordionContentText">{children}</div>
+    <div
+      className={
+        noPadding ? "AccordionContentNoPadding" : "AccordionContentText"
+      }
+    >
+      {children}
+    </div>
   </s.AccordionContent>
 ));
 
