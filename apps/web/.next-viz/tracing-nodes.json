@@ -1,0 +1,34 @@
+[
+  {
+    "path": "next-env.d.ts",
+    "imports": [],
+    "code": "/// <reference types=\"next\" />\n/// <reference types=\"next/image-types/global\" />\n\n// NOTE: This file should not be edited\n// see https://nextjs.org/docs/basic-features/typescript for more information.\n"
+  },
+  {
+    "path": "next.config.js",
+    "imports": [],
+    "code": "const withTM = require(\"next-transpile-modules\")([\r\n  \"@next-viz/cli\",\r\n]);\r\n\r\nmodule.exports = withTM({\r\n  reactStrictMode: true,\r\n});\r\n"
+  },
+  {
+    "path": "viz.config.js",
+    "imports": [],
+    "code": "module.exports = {}"
+  },
+  {
+    "path": "pages/index.tsx",
+    "imports": [
+      {
+        "name": "React",
+        "path": "react",
+        "hasDefault": true,
+        "hasNamespace": false,
+        "named": [
+          "useState",
+          "useEffect",
+          "useCallback"
+        ]
+      }
+    ],
+    "code": "import React, { useState, useEffect, useCallback } from \"react\";\r\n\r\nexport default function Home() {\r\n  const [count, setCount] = useState(0);\r\n\r\n  return (\r\n    <div>\r\n      <h1>Count: {count}</h1>\r\n      <button onClick={() => setCount(count + 1)}>Increment</button>\r\n    </div>\r\n  );\r\n}\r\n"
+  }
+]
