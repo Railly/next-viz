@@ -1802,6 +1802,10 @@ export class Visitor {
     return n;
   }
 
+  getTracingNode(): TracingNode {
+    return this.tracingNode;
+  }
+
   getImports() {
     return this.tracingNode.getImports();
   }

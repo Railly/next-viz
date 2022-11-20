@@ -32,8 +32,7 @@
   },
   "devDependencies": {
     "@swc/cli": "0.1.57",
-    "@types/eslint": "^8.4.6",
-    "tsup": "6.4.0"
+    "@types/eslint": "^8.4.6"
   },
   "author": "Railly Hugo",
   "license": "ISC",

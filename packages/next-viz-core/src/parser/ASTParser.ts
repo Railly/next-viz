@@ -8,6 +8,7 @@ import { Visitor } from "../Visitor";
 import ParsedFile from "./ParsedFile";
 import { JSXElement } from "./JSXElement";
 import { JSXAttribute } from "./JSXAttribute";
+import { SimpleVisitor } from "../SimpleVisitor";
 const glob = require("fast-glob");
 
 export class ASTParser {
@@ -26,31 +27,39 @@ export class ASTParser {
   }
 
   parse(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      console.log(`[NextViz] Parsing ${this.options.rootFolderPath}...`);
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log(`[NextViz] Parsing ${this.options.rootFolderPath}...`);
+        const files = await this.getFilesAndDirectories();
+        await this.traverseFiles(files);
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
-      this.getFilesAndDirectories()
-        .then((files) => {
-          this.traverseFiles(files);
-          // this.generateTracingNodes();
-          resolve();
-        })
-        .catch((err) => {
-          reject(err);
-        });
-      //   const parser = new Parser({
-      //     rootFolderPath,
-      //     rootComponents,
-      //     pathToSaveDir,
-      //     log: ASTParser.log,
-      //     onParse: (tracingNode: TracingNode) => {
-      //       this.tracingNodes.set(tracingNode.getId(), tracingNode);
-      //     },
-      //   });
-      //   parser.parse().then(() => {
-      //     console.log("[NextViz] Parsing done.");
-      //     resolve();
-      //   });
+  writeFile(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        const stringifiedNodes = Array.from(this.tracingNodes.values()).map(
+          (tracingNode) => {
+            return tracingNode.extractData();
+          }
+        );
+
+        const fileName = "tracing-nodes.json";
+        const filePath = path.join(this.options.pathToSaveDir, fileName);
+
+        if (!fs.existsSync(this.options.pathToSaveDir)) {
+          fs.mkdirSync(this.options.pathToSaveDir);
+          fs.writeFileSync(filePath, JSON.stringify(stringifiedNodes, null, 2));
+        }
+        console.log(`[NextViz] Wrote file ${filePath}`);
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
@@ -64,44 +73,40 @@ export class ASTParser {
   private traverseFiles(files: string[]) {
     console.info(`[NextViz] Found ${files.length} files...`);
     console.info(`[NextViz] Traversing files: [${files.join(", ")}]...`);
-    files.forEach((file, i) => {
+    const promises = files.map((file, i) => {
       // const tracingNode = new TracingNode(file);
       // this.tracingNodes.set(tracingNode.getId(), tracingNode);
       if (fs.existsSync(file) && fs.lstatSync(file).isFile()) {
-        this.parseFile(file);
+        return this.parseFile(file);
       }
+      return Promise.resolve();
     });
+
+    return Promise.all(promises);
   }
 
-  private parseFile(path: string) {
+  private parseFile(path: string): Promise<any> {
     const fileContent = fs.readFileSync(path, "utf-8");
     console.info(`[NextViz] Parsing file ${path}...`);
 
-    swc
-      .parse(fileContent, {
-        syntax: "typescript",
+    return swc.transform(fileContent, {
+      jsc: {
         target: "es2015",
-        tsx: true,
-        decorators: true,
-      })
-      .then(async (ast) => {
-        const visitor = new Visitor(path, fileContent);
-        visitor.visitModule(ast);
-        console.log(visitor.getImports());
-        // const graph = new Graph();
-        // logger.log(visitor.getJSXElements());
-        // logger.success(
-        //   JSON.stringify(visitor.elements.map((a) => a.getNode()))
-        // );
-        // logger.success(
-        //   JSON.stringify(visitor.attributes.map((a) => a.getNode()))
-        // );
-        // console.log(visitor.getHooks());
-        // console.log(visitor.getExports());
-        // console.log(visitor.getComponents());
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+        parser: {
+          syntax: "typescript",
+          tsx: true,
+          decorators: true,
+        },
+      },
+      plugin: (program) => {
+        const simpleVisitor = new SimpleVisitor(path, fileContent);
+        const output = simpleVisitor.visitProgram(program);
+        this.tracingNodes.set(path, simpleVisitor.getTracingNode());
+        Array.from(this.tracingNodes.values()).forEach((tracingNode) => {
+          console.log(tracingNode.getJSXElements());
+        });
+        return output;
+      },
+    });
   }
 }

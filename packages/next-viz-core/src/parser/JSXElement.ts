@@ -11,6 +11,11 @@ export class JSXElement extends ParsableNode {
   }
 
   getId(): string {
+    {
+      console.log({
+        location: super.getLocation(),
+      });
+    }
     return `${super.getPath()}:${this.getName()}:${super.getLocation().start}:${
       super.getLocation().end
     }`;

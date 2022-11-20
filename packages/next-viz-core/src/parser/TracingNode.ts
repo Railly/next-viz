@@ -3,7 +3,7 @@ import { JSXElement } from "./JSXElement";
 import { ParsableNode } from "./ParsableNode";
 
 export class TracingNode extends ParsableNode {
-  private JSXElements: Map<string, JSXElement> = new Map();
+  private JSXElements: JSXElement[] = [];
   private imports: Import[] = [];
   public timesUsed = 0;
   public code: string;
@@ -14,25 +14,10 @@ export class TracingNode extends ParsableNode {
   }
 
   addJSXElement(element: JSXElement): void {
-    if (!super.isOpen()) {
-      throw new Error(
-        `TracingNode.addJSXElement: This node has not been opened yet in ${super.getLocation()}`
-      );
-    }
-    this.JSXElements.set(element.getId(), element);
+    this.JSXElements.push(element);
   }
 
-  getJSXElement(id: string): JSXElement | undefined {
-    const element = this.JSXElements.get(id);
-    if (element) {
-      return element;
-    }
-    throw new Error(
-      `TracingNode.getJSXElement: This node does not have an element with id ${id} in ${super.getLocation()}`
-    );
-  }
-
-  getJSXElements(): Map<string, JSXElement> {
+  getJSXElements(): JSXElement[] {
     return this.JSXElements;
   }
 
@@ -50,7 +35,7 @@ export class TracingNode extends ParsableNode {
   }
 
   hasJSXElements(): boolean {
-    return this.JSXElements.size > 0;
+    return this.JSXElements.length > 0;
   }
 
   getLinesOfCode(): number {
@@ -66,5 +51,13 @@ export class TracingNode extends ParsableNode {
 
   peek<T>(stack: T[]): T {
     return stack[stack.length - 1];
+  }
+
+  extractData() {
+    return {
+      path: super.getPath(),
+      imports: this.imports,
+      code: this.code,
+    };
   }
 }
