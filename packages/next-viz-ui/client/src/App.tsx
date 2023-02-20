@@ -1,100 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { styled } from "@stitches/react";
 import ReactFlow, {
   Controls,
   useNodesState,
   useEdgesState,
   addEdge,
-  Node,
-  Edge,
   Connection,
+  Edge,
   Background,
+  ConnectionLineType,
 } from "reactflow";
 
-import TracingNode, { TracingNodeData } from "./components/TracingNode";
-import TracingEdge from "./components/TracingEdge";
-import FunctionIcon from "./components/FunctionIcon";
-import FileIcon from "./components/FileIcon";
-import { styled } from "@stitches/react";
-
-const initialNodes: Node<TracingNodeData>[] = [
-  {
-    id: "1",
-    position: { x: 0, y: 0 },
-    data: { icon: <FunctionIcon />, title: "readFile", subline: "api.ts" },
-    type: "nextviz",
-  },
-  {
-    id: "2",
-    position: { x: 350, y: 0 },
-    data: { icon: <FunctionIcon />, title: "bundle", subline: "apiContents" },
-    type: "nextviz",
-  },
-  {
-    id: "3",
-    position: { x: 0, y: 350 },
-    data: { icon: <FunctionIcon />, title: "readFile", subline: "sdk.ts" },
-    type: "nextviz",
-  },
-  {
-    id: "4",
-    position: { x: 350, y: 350 },
-    data: { icon: <FunctionIcon />, title: "bundle", subline: "sdkContents" },
-    type: "nextviz",
-  },
-  {
-    id: "5",
-    position: { x: 700, y: 225 },
-    data: { icon: <FunctionIcon />, title: "concat", subline: "api, sdk" },
-    type: "nextviz",
-  },
-  {
-    id: "6",
-    position: { x: 1050, y: 225 },
-    data: { icon: <FileIcon />, title: "fullBundle" },
-    type: "nextviz",
-  },
-];
-
-const initialEdges: Edge[] = [
-  {
-    id: "e1-2",
-    source: "1",
-    target: "2",
-  },
-  {
-    id: "e3-4",
-    source: "3",
-    target: "4",
-  },
-  {
-    id: "e2-5",
-    source: "2",
-    target: "5",
-  },
-  {
-    id: "e4-5",
-    source: "4",
-    target: "5",
-  },
-  {
-    id: "e5-6",
-    source: "5",
-    target: "6",
-  },
-];
-
-const nodeTypes = {
-  nextviz: TracingNode,
-};
-
-const edgeTypes = {
-  nextviz: TracingEdge,
-};
-
-const defaultEdgeOptions = {
-  type: "tracingEdge",
-  markerEnd: "edge-circle",
-};
+import { useDagre } from "./hooks/useDagre";
+import { defaultEdgeOptions, edgeTypes, nodeTypes } from "./utils";
 
 const GraphPanelContainer = styled("div", {
   height: "100vh",
@@ -102,33 +20,52 @@ const GraphPanelContainer = styled("div", {
 });
 
 const Flow = () => {
+  const { getLayoutedElements } = useDagre();
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [testNodes, setTestNodes] = useState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
+  const getTestNodes = useCallback(async () => {
+    const response = await window.fetch("/api/tracing-nodes", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    // console.log({ data });
+    const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+      data.nodes,
+      data.edges
+    );
+    setNodes(layoutedNodes);
+    setEdges(layoutedEdges);
+  }, []);
+
+  useEffect(() => {
+    getTestNodes();
+  }, []);
 
   const onConnect = useCallback(
-    (params: Connection) => setEdges((els) => addEdge(params, els)),
+    (params: Connection) =>
+      setEdges((eds) =>
+        addEdge(
+          { ...params, type: ConnectionLineType.SmoothStep, animated: true },
+          eds
+        )
+      ),
     []
   );
 
-  useEffect(() => {
-    const getTestNodes = async () => {
-      const response = await window.fetch("/api/tracing-nodes");
-      const data = await response.json();
-      setTestNodes(data);
-      const newData = data.map((node: any) => ({
-        id: node.path,
-        data: {
-          ...node,
-        },
-        type: "nextviz",
-        position: { x: 0, y: 0 },
-      }));
-      setNodes(newData);
-    };
+  // const onLayout = useCallback(
+  //   (direction: string) => {
+  //     const { nodes: layoutedNodes, edges: layoutedEdges } =
+  //       getLayoutedElements(nodes, edges, direction);
 
-    getTestNodes();
-  }, []);
+  //     setNodes([...layoutedNodes]);
+  //     setEdges([...layoutedEdges]);
+  //   },
+  //   [nodes, edges]
+  // );
 
   return (
     <GraphPanelContainer>
@@ -138,10 +75,11 @@ const Flow = () => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        fitView
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         defaultEdgeOptions={defaultEdgeOptions}
+        connectionLineType={ConnectionLineType.SmoothStep}
+        fitView
       >
         <Controls showInteractive={false} />
         <svg>
@@ -173,6 +111,10 @@ const Flow = () => {
         </svg>
         <Background />
       </ReactFlow>
+      {/* <div className="controls">
+        <button onClick={() => onLayout("TB")}>vertical layout</button>
+        <button onClick={() => onLayout("LR")}>horizontal layout</button>
+      </div> */}
     </GraphPanelContainer>
   );
 };

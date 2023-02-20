@@ -3,12 +3,8 @@ import { ParserOptions } from "../types";
 import fs from "fs";
 import path from "path";
 import swc from "@swc/core";
-import { fileURLToPath } from "url";
-import { Visitor } from "../Visitor";
-import ParsedFile from "./ParsedFile";
-import { JSXElement } from "./JSXElement";
-import { JSXAttribute } from "./JSXAttribute";
 import { SimpleVisitor } from "../SimpleVisitor";
+import { Graph } from "../builder/Graph";
 const glob = require("fast-glob");
 
 export class ASTParser {
@@ -34,38 +30,52 @@ export class ASTParser {
         await this.traverseFiles(files);
         resolve();
       } catch (err) {
-        reject(err);
+        reject({
+          message: "[ASTParser]: Error in parse method",
+          err,
+        });
       }
     });
   }
 
   writeFile(): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        const stringifiedNodes = Array.from(this.tracingNodes.values()).map(
-          (tracingNode) => {
-            return tracingNode.extractData();
-          }
+        const graph = new Graph(this.tracingNodes, this.options.rootFolderPath);
+        console.log("[ASTParser] Graph parsed...");
+        const pages = await this.getFilesAndDirectories(
+          "**/*.jsx",
+          "pages/{_app,_document}.jsx"
         );
+        graph.build(pages);
+        console.log("[Graph Builder] Graph built...");
 
         const fileName = "tracing-nodes.json";
         const filePath = path.join(this.options.pathToSaveDir, fileName);
 
         if (!fs.existsSync(this.options.pathToSaveDir)) {
           fs.mkdirSync(this.options.pathToSaveDir);
-          fs.writeFileSync(filePath, JSON.stringify(stringifiedNodes, null, 2));
         }
+        fs.writeFileSync(filePath, graph.toString());
         console.log(`[NextViz] Wrote file ${filePath}`);
         resolve();
       } catch (err) {
-        reject(err);
+        reject({
+          message: "[ASTParser]: Error in writeFile method",
+          err,
+        });
       }
     });
   }
 
-  private getFilesAndDirectories(): Promise<string[]> {
-    return glob(["**/*.{js,jsx,ts,tsx}"], {
-      ignore: ["**/node_modules/**"],
+  private getFilesAndDirectories(
+    globePattern?: string,
+    ignorePattern?: string
+  ): Promise<string[]> {
+    const pattern = globePattern || "**/*.jsx";
+    const ignore = ignorePattern || "node_modules/**";
+    return glob([pattern], {
+      ignore: [ignore],
       cwd: this.options.rootFolderPath,
     });
   }
@@ -73,9 +83,7 @@ export class ASTParser {
   private traverseFiles(files: string[]) {
     console.info(`[NextViz] Found ${files.length} files...`);
     console.info(`[NextViz] Traversing files: [${files.join(", ")}]...`);
-    const promises = files.map((file, i) => {
-      // const tracingNode = new TracingNode(file);
-      // this.tracingNodes.set(tracingNode.getId(), tracingNode);
+    const promises = files.map((file) => {
       if (fs.existsSync(file) && fs.lstatSync(file).isFile()) {
         return this.parseFile(file);
       }
@@ -93,8 +101,8 @@ export class ASTParser {
       jsc: {
         target: "es2015",
         parser: {
-          syntax: "typescript",
-          tsx: true,
+          syntax: "ecmascript",
+          jsx: true,
           decorators: true,
         },
       },
@@ -102,9 +110,6 @@ export class ASTParser {
         const simpleVisitor = new SimpleVisitor(path, fileContent);
         const output = simpleVisitor.visitProgram(program);
         this.tracingNodes.set(path, simpleVisitor.getTracingNode());
-        Array.from(this.tracingNodes.values()).forEach((tracingNode) => {
-          console.log(tracingNode.getJSXElements());
-        });
         return output;
       },
     });

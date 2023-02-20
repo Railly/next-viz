@@ -22,6 +22,7 @@ export class ParsableNode {
     this.node = node;
     this.location = { start: node.span.start, end: node.span.end };
   }
+
   isOpen(): boolean {
     return !!this.node;
   }
@@ -67,13 +68,10 @@ export class ParsableNode {
     }
     // throw new Error("This component has not been identified yet.");
     console.warn("This component has not been identified yet.");
-    return "";
+    return this.path;
   }
 
   getLocation(): Location {
-    console.log({
-      location: this.location,
-    });
     if (this.location === undefined) {
       throw new Error(
         "ParsableElement.getLocation: This component has not been opened yet."

@@ -12,7 +12,6 @@ export const AccordionRoot = styled(Accordion.Root, {
 export const AccordionItem = styled(Accordion.Item, {
   overflow: "hidden",
   marginTop: "1px",
-  borderBottom: "1.5px dashed white",
   "&:first-child": {
     marginTop: "0",
     borderTopLeftRadius: "4px",
@@ -43,7 +42,7 @@ export const AccordionTrigger = styled(Accordion.Trigger, {
   lineHeight: "1",
   color: "white",
   boxShadow: "0 1px 0 var(--mauve6)",
-  backgroundColor: "#464646",
+  backgroundColor: "#282F33",
   cursor: "pointer",
   border: "none",
 
@@ -54,6 +53,16 @@ export const AccordionTrigger = styled(Accordion.Trigger, {
   "&:hover": {
     backgroundColor: "#363636",
     transition: "background-color 0.2s ease",
+  },
+  variants: {
+    isMain: {
+      true: {
+        backgroundColor: "#1D2124",
+        "&:hover": {
+          backgroundColor: "#1D2124",
+        },
+      },
+    },
   },
 });
 
@@ -86,7 +95,7 @@ export const slideUp = keyframes({
 
 export const AccordionContent = styled(Accordion.Content, {
   overflow: "hidden",
-  borderBottom: "1.5px dashed #464646",
+  borderTop: "1.5px dashed white",
   "&[data-state=open]": {
     animation: `${slideDown} 300ms ease-out`,
   },
@@ -95,5 +104,41 @@ export const AccordionContent = styled(Accordion.Content, {
   },
   "& .AccordionContentText": {
     padding: "5px 20px",
+  },
+});
+
+export const CustomOption = styled("div", {
+  fontFamily: "inherit",
+  padding: "16px 20px",
+  height: "45px",
+  flex: "1",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  fontSize: "15px",
+  lineHeight: "1",
+  color: "white",
+  boxShadow: "0 1px 0 var(--mauve6)",
+  backgroundColor: "#0E2642",
+  cursor: "pointer",
+  borderTop: "1.5px dashed white",
+
+  "&[data-state=open] .DownArrowIcon": {
+    transform: "rotate(180deg)",
+  },
+
+  "&:hover": {
+    backgroundColor: "#363636",
+    transition: "background-color 0.2s ease",
+  },
+  variants: {
+    isMain: {
+      true: {
+        backgroundColor: "#1D2124",
+        "&:hover": {
+          backgroundColor: "#1D2124",
+        },
+      },
+    },
   },
 });

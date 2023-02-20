@@ -10,4 +10,5 @@ export default defineConfig({
   external: [],
   format: ["esm", "cjs"],
   dts: true,
+  sourcemap: true,
 });

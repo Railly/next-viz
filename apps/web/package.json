@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 3005",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -11,13 +11,24 @@
     "viz:parse": "next-viz parse"
   },
   "dependencies": {
+    "@hookform/resolvers": "2.8.0",
     "@next-viz/cli": "*",
+    "@radix-ui/react-dialog": "^1.0.2",
+    "autoprefixer": "10.2.6",
+    "axios": "0.21.4",
+    "dagre": "^0.8.5",
     "next": "12.3.1",
+    "postcss": "8.3.5",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-clipboard.js": "2.0.16",
+    "react-dom": "18.2.0",
+    "react-hook-form": "7.15.1",
+    "tailwindcss": "2.2.4",
+    "yup": "0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@types/dagre": "^0.7.48",
     "@types/node": "^17.0.12",
     "@types/react": "18.0.17",
     "eslint": "7.32.0",
