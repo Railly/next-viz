@@ -3,11 +3,8 @@ import { ParserOptions } from "../types";
 import fs from "fs";
 import path from "path";
 import swc from "@swc/core";
-import { fileURLToPath } from "url";
-import { Visitor } from "../Visitor";
-import ParsedFile from "./ParsedFile";
-import { JSXElement } from "./JSXElement";
-import { JSXAttribute } from "./JSXAttribute";
+import { SimpleVisitor } from "../SimpleVisitor";
+import { Graph } from "../builder/Graph";
 const glob = require("fast-glob");
 
 export class ASTParser {
@@ -26,37 +23,59 @@ export class ASTParser {
   }
 
   parse(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      console.log(`[NextViz] Parsing ${this.options.rootFolderPath}...`);
-
-      this.getFilesAndDirectories()
-        .then((files) => {
-          this.traverseFiles(files);
-          // this.generateTracingNodes();
-          resolve();
-        })
-        .catch((err) => {
-          reject(err);
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log(`[NextViz] Parsing ${this.options.rootFolderPath}...`);
+        const files = await this.getFilesAndDirectories();
+        await this.traverseFiles(files);
+        resolve();
+      } catch (err) {
+        reject({
+          message: "[ASTParser]: Error in parse method",
+          err,
         });
-      //   const parser = new Parser({
-      //     rootFolderPath,
-      //     rootComponents,
-      //     pathToSaveDir,
-      //     log: ASTParser.log,
-      //     onParse: (tracingNode: TracingNode) => {
-      //       this.tracingNodes.set(tracingNode.getId(), tracingNode);
-      //     },
-      //   });
-      //   parser.parse().then(() => {
-      //     console.log("[NextViz] Parsing done.");
-      //     resolve();
-      //   });
+      }
     });
   }
 
-  private getFilesAndDirectories(): Promise<string[]> {
-    return glob(["**/*.{js,jsx,ts,tsx}"], {
-      ignore: ["**/node_modules/**"],
+  writeFile(): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const graph = new Graph(this.tracingNodes, this.options.rootFolderPath);
+        console.log("[ASTParser] Graph parsed...");
+        const pages = await this.getFilesAndDirectories(
+          "**/*.jsx",
+          "pages/{_app,_document}.jsx"
+        );
+        graph.build(pages);
+        console.log("[Graph Builder] Graph built...");
+
+        const fileName = "tracing-nodes.json";
+        const filePath = path.join(this.options.pathToSaveDir, fileName);
+
+        if (!fs.existsSync(this.options.pathToSaveDir)) {
+          fs.mkdirSync(this.options.pathToSaveDir);
+        }
+        fs.writeFileSync(filePath, graph.toString());
+        console.log(`[NextViz] Wrote file ${filePath}`);
+        resolve();
+      } catch (err) {
+        reject({
+          message: "[ASTParser]: Error in writeFile method",
+          err,
+        });
+      }
+    });
+  }
+
+  private getFilesAndDirectories(
+    globePattern?: string,
+    ignorePattern?: string
+  ): Promise<string[]> {
+    const pattern = globePattern || "**/*.jsx";
+    const ignore = ignorePattern || "node_modules/**";
+    return glob([pattern], {
+      ignore: [ignore],
       cwd: this.options.rootFolderPath,
     });
   }
@@ -64,44 +83,35 @@ export class ASTParser {
   private traverseFiles(files: string[]) {
     console.info(`[NextViz] Found ${files.length} files...`);
     console.info(`[NextViz] Traversing files: [${files.join(", ")}]...`);
-    files.forEach((file, i) => {
-      // const tracingNode = new TracingNode(file);
-      // this.tracingNodes.set(tracingNode.getId(), tracingNode);
+    const promises = files.map((file) => {
       if (fs.existsSync(file) && fs.lstatSync(file).isFile()) {
-        this.parseFile(file);
+        return this.parseFile(file);
       }
+      return Promise.resolve();
     });
+
+    return Promise.all(promises);
   }
 
-  private parseFile(path: string) {
+  private parseFile(path: string): Promise<any> {
     const fileContent = fs.readFileSync(path, "utf-8");
     console.info(`[NextViz] Parsing file ${path}...`);
 
-    swc
-      .parse(fileContent, {
-        syntax: "typescript",
+    return swc.transform(fileContent, {
+      jsc: {
         target: "es2015",
-        tsx: true,
-        decorators: true,
-      })
-      .then(async (ast) => {
-        const visitor = new Visitor(path, fileContent);
-        visitor.visitModule(ast);
-        console.log(visitor.getImports());
-        // const graph = new Graph();
-        // logger.log(visitor.getJSXElements());
-        // logger.success(
-        //   JSON.stringify(visitor.elements.map((a) => a.getNode()))
-        // );
-        // logger.success(
-        //   JSON.stringify(visitor.attributes.map((a) => a.getNode()))
-        // );
-        // console.log(visitor.getHooks());
-        // console.log(visitor.getExports());
-        // console.log(visitor.getComponents());
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+        parser: {
+          syntax: "ecmascript",
+          jsx: true,
+          decorators: true,
+        },
+      },
+      plugin: (program) => {
+        const simpleVisitor = new SimpleVisitor(path, fileContent);
+        const output = simpleVisitor.visitProgram(program);
+        this.tracingNodes.set(path, simpleVisitor.getTracingNode());
+        return output;
+      },
+    });
   }
 }

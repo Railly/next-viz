@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -52,7 +56,7 @@ body {
   content: '';
   position: absolute;
   padding-bottom: calc(100% * 1.41421356237);
-  width: calc(100% * 1.41421356237);
+  width: calc(100% * 1.51421356237);
   background: conic-gradient(
     from -160deg at 50% 50%,
     #1FCEE5 0deg,
@@ -87,7 +91,7 @@ body {
 }
 
 .react-flow__node-nextviz .inner {
-  background: var(--bg-color);
+  background: #14181B;
   /* padding: 16px 20px; */
   border-radius: var(--node-border-radius);
   display: flex;

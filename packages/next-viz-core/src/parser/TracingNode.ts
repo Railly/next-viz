@@ -2,8 +2,19 @@ import { Import } from "./Import";
 import { JSXElement } from "./JSXElement";
 import { ParsableNode } from "./ParsableNode";
 
+export interface NodeData {
+  id: string;
+  path: string;
+  imports: Import[];
+  linesOfCode: number;
+  code: string;
+  outDegree: number;
+  inDegree: number;
+  jsxElements: JSXElement[];
+}
+
 export class TracingNode extends ParsableNode {
-  private JSXElements: Map<string, JSXElement> = new Map();
+  private JSXElements: JSXElement[] = [];
   private imports: Import[] = [];
   public timesUsed = 0;
   public code: string;
@@ -14,34 +25,14 @@ export class TracingNode extends ParsableNode {
   }
 
   addJSXElement(element: JSXElement): void {
-    if (!super.isOpen()) {
-      throw new Error(
-        `TracingNode.addJSXElement: This node has not been opened yet in ${super.getLocation()}`
-      );
-    }
-    this.JSXElements.set(element.getId(), element);
+    this.JSXElements.push(element);
   }
 
-  getJSXElement(id: string): JSXElement | undefined {
-    const element = this.JSXElements.get(id);
-    if (element) {
-      return element;
-    }
-    throw new Error(
-      `TracingNode.getJSXElement: This node does not have an element with id ${id} in ${super.getLocation()}`
-    );
-  }
-
-  getJSXElements(): Map<string, JSXElement> {
+  getJSXElements(): JSXElement[] {
     return this.JSXElements;
   }
 
   addImport(imp: Import): void {
-    // if (!super.isOpen()) {
-    //   throw new Error(
-    //     `TracingNode.addImport: This node has not been opened yet in ${super.getLocation()}`
-    //   );
-    // }
     this.imports.push(imp);
   }
 
@@ -50,21 +41,38 @@ export class TracingNode extends ParsableNode {
   }
 
   hasJSXElements(): boolean {
-    return this.JSXElements.size > 0;
+    return this.JSXElements.length > 0;
   }
 
   getLinesOfCode(): number {
     const node = super.getNode();
+    // console.log({ node });
     if (node) {
       return node.span.end - node.span.start;
-    } else {
-      throw new Error(
-        `TracingNode.getLinesOfCode: This node has not been opened yet in ${super.getLocation()}`
-      );
+      // } else {
+      // throw new Error(
+      //   `TracingNode.getLinesOfCode: This node has not been opened yet in ${super.getLocation()}`
+      // );
+    }
+    return 0;
+  }
+
+  peek<T>(stack: T[]): T | undefined {
+    if (stack.length !== 0) {
+      return stack[stack.length - 1];
     }
   }
 
-  peek<T>(stack: T[]): T {
-    return stack[stack.length - 1];
+  getFormattedData(): NodeData {
+    return {
+      id: super.getId(),
+      path: super.getPath(),
+      imports: this.imports,
+      linesOfCode: this.getLinesOfCode(),
+      code: this.code,
+      outDegree: this.JSXElements.length,
+      inDegree: this.timesUsed,
+      jsxElements: this.JSXElements,
+    };
   }
 }

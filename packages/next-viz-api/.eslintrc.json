@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:sonarjs/recommended",
+    "plugin:react/recommended"
+  ],
+  "plugins": [
+    "sonarjs",
+    "react"
+  ],
+  "rules": {
+    // Additional custom rules
+  }
+}

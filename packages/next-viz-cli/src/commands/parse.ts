@@ -1,8 +1,9 @@
+import path from "path";
 import { ASTParser, ParserOptions } from "@next-viz/core";
 import { logger } from "../utils/loggers";
 
 export const parseNextJSProject = async ({
-  rootFolderPath = process.cwd(),
+  rootFolderPath,
   rootComponents,
   pathToSaveDir,
   log,
@@ -15,6 +16,7 @@ export const parseNextJSProject = async ({
       log,
     });
     await parser.parse();
+    await parser.writeFile();
   } catch (err) {
     logger.error("Something went wrong while parsing NextJS project", {
       err,

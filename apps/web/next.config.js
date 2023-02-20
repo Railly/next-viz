@@ -4,4 +4,13 @@ const withTM = require("next-transpile-modules")([
 
 module.exports = withTM({
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/login/",
+        permanent: true,
+      },
+    ]
+  },
 });
