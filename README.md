@@ -1,7 +1,7 @@
 # Next Viz
 
 Visualizer for Next.js projects.
-I will document my journey on my [personal website](https://raillyhugo.com).
+I will document my journey on my [personal website](https://railly.dev).
 
 ## Roadmap
 
